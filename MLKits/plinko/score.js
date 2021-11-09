@@ -4,10 +4,6 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
   OUTPUTS.push([dropPosition, bounciness, size, bucketLabel]);
 }
 
-function calcDistanceBetweenPoints(pointA, pointB) {
-  return Math.abs(pointA - pointB);
-}
-
 function runAnalysis() {
   const testSetSize = 100;
   const [testSet, trainingSet] = splitDataset(OUTPUTS, testSetSize);
@@ -35,6 +31,16 @@ function knn(data, point, k) {
     .first()
     .parseInt()
     .value();
+}
+
+function calcDistanceBetweenPoints(pointA, pointB) {
+  return (
+    _.chain(pointA)
+      .zip(pointB)
+      .map(([a, b]) => (a - b) ** 2)
+      .sum()
+      .value() ** 0.5
+  );
 }
 
 function splitDataset(data, testCount) {
