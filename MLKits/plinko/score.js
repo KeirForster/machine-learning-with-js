@@ -12,14 +12,13 @@ function calcDistanceBetweenPoints(pointA, pointB) {
 function runAnalysis() {
   const testSetSize = 10;
   const [testSet, trainingSet] = splitDataset(OUTPUTS, testSetSize);
-  let numCorrectPredictions = 0;
 
-  for (const test of testSet) {
-    const bucket = knn(trainingSet, test[0]);
-    if (bucket === test[3]) numCorrectPredictions++;
-  }
+  const accuracy = _.chain(testSet)
+    .filter((testPoint) => knn(trainingSet, testPoint[0]) === testPoint[3])
+    .size()
+    .divide(testSetSize)
+    .value();
 
-  const accuracy = numCorrectPredictions / testSetSize;
   console.log(`Accuracy:`, `${accuracy * 100}%`);
 }
 
