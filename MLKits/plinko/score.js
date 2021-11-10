@@ -6,7 +6,11 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 
 function runAnalysis() {
   const testSetSize = 100;
-  const [testSet, trainingSet] = splitDataset(OUTPUTS, testSetSize);
+  const featureCount = 3;
+  const [testSet, trainingSet] = splitDataset(
+    minMax(OUTPUTS, featureCount),
+    testSetSize
+  );
 
   _.range(1, 20).forEach((k) => {
     const accuracy = _.chain(testSet)
