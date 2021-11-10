@@ -6,13 +6,12 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 
 function runAnalysis() {
   const testSetSize = 100;
-  const featureCount = 3;
-  const [testSet, trainingSet] = splitDataset(
-    minMax(OUTPUTS, featureCount),
-    testSetSize
-  );
+  const k = 10;
 
-  _.range(1, 20).forEach((k) => {
+  _.range(0, 3).forEach((feature) => {
+    const data = _.map(OUTPUTS, (row) => [row[feature], _.last(row)]);
+    const [testSet, trainingSet] = splitDataset(minMax(data, 1), testSetSize);
+
     const accuracy = _.chain(testSet)
       .filter(
         (testPoint) =>
@@ -22,7 +21,7 @@ function runAnalysis() {
       .divide(testSetSize)
       .value();
 
-    console.log(`For k of ${k}, accuracy is: `, `${accuracy * 100}%`);
+    console.log(`For feature of ${feature}, accuracy is ${accuracy * 100}%`);
   });
 }
 
